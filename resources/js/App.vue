@@ -1,46 +1,56 @@
 <template>
-  <div id="app" class="bg-black text-white min-h-screen">
-    <nav class="p-4">
-      <ul class="flex justify-center space-x-6">
-        <li><router-link to="/" class="text-blue-400 hover:text-blue-300">Inicio</router-link></li>
-        <li><router-link to="/about" class="text-blue-400 hover:text-blue-300">Acerca de</router-link></li>
-        <li><router-link to="/services" class="text-blue-400 hover:text-blue-300">Servicios</router-link></li>
-        <li><router-link to="/contact" class="text-blue-400 hover:text-blue-300">Contacto</router-link></li>
-      </ul>
-    </nav>
+  <Router>
+    <div class="flex flex-col min-h-screen bg-black text-white">
+      <nav class="p-4">
+        <ul class="flex justify-center space-x-6">
+          <li><RouterLink to="/" class="text-blue-400 hover:text-blue-300">Inicio</RouterLink></li>
+          <li><RouterLink to="/about" class="text-blue-400 hover:text-blue-300">Acerca de</RouterLink></li>
+          <li><RouterLink to="/services" class="text-blue-400 hover:text-blue-300">Servicios</RouterLink></li>
+          <li><RouterLink to="/contact" class="text-blue-400 hover:text-blue-300">Contacto</RouterLink></li>
+        </ul>
+      </nav>
 
-    <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+      <main class="flex-grow">
+        <RouterView />
+      </main>
 
-    <footer class="p-4 text-center text-gray-500">
-      &copy; 2023 Corp Max King Tech. Todos los derechos reservados.
-    </footer>
-  </div>
+      <Footer />
+    </div>
+  </Router>
 </template>
 
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
+<script>
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from './components/Home.vue';
+import About from './components/About.vue';
+import Services from './components/Services.vue';
+import ServiceDetail from './components/ServiceDetail.vue';
+import CaseStudy from './components/CaseStudy.vue';
+import Contact from './components/Contact.vue';
+import Footer from './components/Footer.vue';
+
+const routes = [
+  { path: '/', component: Home },
+  { path: '/about', component: About },
+  { path: '/services', component: Services },
+  { path: '/services/:id', component: ServiceDetail },
+  { path: '/case-study/:id', component: CaseStudy },
+  { path: '/contact', component: Contact }
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
+
+export default {
+  components: {
+    Footer
+  },
+  router
+}
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
-body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #000;
-  color: #fff;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+<style scoped>
+/* Estilos adicionales si es necesario */
 </style>

@@ -1,0 +1,71 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Estilos personalizados */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #000;
+    color: #fff;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* Estilos para los botones de filtro */
+.filter-button {
+    @apply px-4 py-2 rounded-full transition-all duration-300;
+}
+
+.filter-button.active {
+    @apply bg-blue-500 text-white;
+}
+
+.filter-button:not(.active) {
+    @apply bg-gray-800 text-gray-300 hover:bg-gray-700;
+}
+
+/* Estilos para las tarjetas de servicio */
+.service-card {
+    @apply bg-gray-900 p-6 rounded-lg text-center transition-all duration-300 hover:bg-gray-800;
+}
+
+.service-card-icon {
+    @apply w-16 h-16 mx-auto mb-4 text-green-400;
+}
+
+.service-card-title {
+    @apply text-2xl font-bold mb-2 text-white;
+}
+
+.service-card-description {
+    @apply text-gray-400 mb-4;
+}
+
+.service-card-button {
+    @apply inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+}
+
+/* Estilos para el footer */
+.footer {
+    @apply bg-gray-900 text-white py-8;
+}
+
+.footer-content {
+    @apply container mx-auto px-4;
+}
+
+.footer-links {
+    @apply flex items-center space-x-4;
+}
+
+.footer-link {
+    @apply hover:text-blue-400 transition-colors duration-300;
+}

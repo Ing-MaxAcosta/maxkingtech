@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",                               // Establece la versión de ECMAScript de salida
+    "module": "esnext",                            // Usa el sistema de módulos ESNext
+    "strict": true,                                // Habilita todas las comprobaciones de tipo estrictas
+    "esModuleInterop": true,                       // Permite la interoperabilidad entre módulos CommonJS y ES
+    "skipLibCheck": true,                          // Omite la verificación de archivos de declaración
+    "forceConsistentCasingInFileNames": true,     // Asegura que los nombres de archivos tengan una coincidencia de mayúsculas y minúsculas
+    "jsx": "preserve",                             // Para usar JSX si es necesario (aunque no es común en Vue)
+    "types": ["vite/client"],                      // Incluir tipos para Vite
+    "moduleResolution": "node"                     // Resolución de módulos al estilo de Node.js
+  },
+  "include": ["resources/js/**/*"],                // Incluir todos los archivos TS y TSX en la carpeta js
+  "exclude": ["node_modules"]                      // Excluir la carpeta node_modules
+}

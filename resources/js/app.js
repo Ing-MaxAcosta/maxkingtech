@@ -1,4 +1,3 @@
-import './bootstrap';
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
@@ -8,6 +7,7 @@ import Services from './components/Services.vue'
 import ServiceDetail from './components/ServiceDetail.vue'
 import CaseStudy from './components/CaseStudy.vue'
 import Contact from './components/Contact.vue'
+import '../css/app.css'
 
 const router = createRouter({
   history: createWebHistory(),
