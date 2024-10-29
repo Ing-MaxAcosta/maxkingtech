@@ -2,37 +2,42 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Estilos personalizados */
+/* Tipografía y fondo */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #000;
-    color: #fff;
+    background-color: #000; /* Negro de fondo para un estilo futurista */
+    color: #e0e0e0; /* Texto gris claro */
 }
 
-.fade-enter-active,
-.fade-leave-active {
+/* Transiciones y Animaciones */
+.fade-enter-active, .fade-leave-active {
     transition: opacity 0.5s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.fade-enter-from, .fade-leave-to {
     opacity: 0;
 }
 
-/* Estilos para los botones de filtro */
+/* Encabezados futuristas */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', sans-serif;
+    color: #00ccff; /* Azul eléctrico */
+}
+
+/* Estilos para botones de filtro */
 .filter-button {
     @apply px-4 py-2 rounded-full transition-all duration-300;
 }
 
 .filter-button.active {
-    @apply bg-blue-500 text-white;
+    @apply bg-blue-600 text-white;
 }
 
 .filter-button:not(.active) {
     @apply bg-gray-800 text-gray-300 hover:bg-gray-700;
 }
 
-/* Estilos para las tarjetas de servicio */
+/* Tarjetas de servicio */
 .service-card {
     @apply bg-gray-900 p-6 rounded-lg text-center transition-all duration-300 hover:bg-gray-800;
 }

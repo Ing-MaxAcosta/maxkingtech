@@ -1,6 +1,7 @@
 <template>
-  <div class="container mx-auto px-4">
-    <div class="banner h-96 flex items-center justify-center mb-12 bg-gradient-to-r from-blue-500 to-green-400 rounded-lg overflow-hidden">
+  <div class="container mx-auto px-4 relative">
+    <div id="particle-background"></div>
+    <div class="banner h-96 flex items-center justify-center mb-12 bg-gradient-to-r from-blue-500 to-green-400 rounded-lg overflow-hidden transform transition-all duration-500 hover:scale-105">
       <h1 class="text-6xl font-bold text-white animate-pulse">
         Corp Max King Tech
       </h1>
@@ -17,8 +18,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { Cpu, Globe, Shield } from 'lucide-vue-next'
+import { ref, onMounted } from 'vue';
+import { Cpu, Globe, Shield } from 'lucide-vue-next';
+import { loadParticles } from '../particles.js'; // Importa la función loadParticles
+import { fadeIn } from '../animations/animations'
+
 
 const features = ref([
   { 
@@ -36,5 +40,21 @@ const features = ref([
     title: 'Seguridad Primero', 
     description: 'La seguridad de sus datos es nuestra prioridad número uno.' 
   },
-])
+]);
+
+onMounted(() => {
+  loadParticles();
+});
 </script>
+
+<style scoped>
+#particle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+</style>

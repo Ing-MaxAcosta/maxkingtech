@@ -6,19 +6,19 @@
           <p>&copy; 2023 Corp Max King Tech. Todos los derechos reservados.</p>
         </div>
         <div class="flex items-center space-x-4">
-          <a href="mailto:info@maxkingtech.com" class="hover:text-blue-400 transition-colors duration-300">
+          <a href="mailto:info@maxkingtech.com" class="footer-link">
             <Mail size="24" />
           </a>
-          <a href="https://www.facebook.com/people/Corp-Max-King-Tech-MKT/61567310301752" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors duration-300">
+          <a href="https://www.facebook.com/people/Corp-Max-King-Tech-MKT/61567310301752" target="_blank" rel="noopener noreferrer" class="footer-link">
             <Facebook size="24" />
           </a>
-          <a href="https://linkedin.com/company/max-king-tech" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors duration-300">
+          <a href="https://linkedin.com/company/max-king-tech" target="_blank" rel="noopener noreferrer" class="footer-link">
             <Linkedin size="24" />
           </a>
-          <a href="https://instagram.com/maxkingtech" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors duration-300">
+          <a href="https://instagram.com/maxkingtech" target="_blank" rel="noopener noreferrer" class="footer-link">
             <Instagram size="24" />
           </a>
-          <a href="https://twitter.com/maxkingtech" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors duration-300">
+          <a href="https://twitter.com/maxkingtech" target="_blank" rel="noopener noreferrer" class="footer-link">
             <Twitter size="24" />
           </a>
         </div>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { Facebook, Linkedin, Instagram, Twitter, Mail } from 'lucide-vue-next'; // Cambia a lucide-vue si usas Vue
+import { Facebook, Linkedin, Instagram, Twitter, Mail } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -36,11 +36,17 @@ export default {
     Linkedin,
     Instagram,
     Twitter,
-    Mail
-  }
-}
+    Mail,
+  },
+};
 </script>
 
 <style scoped>
-/* Estilos adicionales si es necesario */
+.footer-link {
+  transition: transform 0.3s, color 0.3s;
+}
+.footer-link:hover {
+  color: #00ccff;
+  transform: scale(1.2);
+}
 </style>

@@ -8,7 +8,7 @@
         :key="category"
         @click="setSelectedCategory(category)"
         :class="[
-          'px-4 py-2 rounded-full transition-all duration-300',
+          'px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105',
           selectedCategory === category
             ? 'bg-green-500 text-white'
             : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
@@ -27,8 +27,9 @@
         v-for="service in filteredServices"
         :key="service.id"
         class="bg-gray-900 p-6 rounded-lg text-center transition-all duration-300 transform hover:scale-105"
+        ref="serviceItems"
       >
-        <component :is="service.icon" class="w-16 h-16 mx-auto mb-4 text-green-400" />
+        <component :is="service.icon" class="w-16 h-16 mx-auto mb-4 text-green-400 parallax-icon" />
         <h2 class="text-2xl font-bold mb-2 text-white">{{ service.name }}</h2>
         <p class="text-gray-400 mb-4">{{ service.description }}</p>
         <router-link 
@@ -43,105 +44,63 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { Code, Database, Cloud, Lock, Smartphone, Headphones, BarChart, Globe, Cog } from 'lucide-vue-next'
+import { ref, computed, onMounted, watch } from 'vue';
+import { gsap } from 'gsap'; // Importar GSAP
+import { Code, Database, Cloud, Lock, Smartphone, Headphones, BarChart, Globe, Cog } from 'lucide-vue-next';
+
 
 const services = ref([
-  { 
-    id: 1,
-    icon: Code, 
-    name: 'Desarrollo de Software', 
-    description: 'Creamos soluciones de software personalizadas para satisfacer sus necesidades específicas.',
-    category: 'Desarrollo'
-  },
-  { 
-    id: 2,
-    icon: Database, 
-    name: 'Gestión de Datos', 
-    description: 'Optimizamos el almacenamiento y análisis de sus datos para obtener insights valiosos.',
-    category: 'Datos'
-  },
-  { 
-    id: 3,
-    icon: Cloud, 
-    name: 'Servicios en la Nube', 
-    description: 'Ofrecemos soluciones en la nube escalables y seguras para su negocio.',
-    category: 'Infraestructura'
-  },
-  { 
-    id: 4,
-    icon: Lock, 
-    name: 'Ciberseguridad', 
-    description: 'Protegemos sus activos digitales con las últimas tecnologías de seguridad.',
-    category: 'Seguridad'
-  },
-  { 
-    id: 5,
-    icon: Smartphone, 
-    name: 'Desarrollo Móvil', 
-    description: 'Creamos aplicaciones móviles intuitivas y eficientes para iOS y Android.',
-    category: 'Desarrollo'
-  },
-  { 
-    id: 6,
-    icon: Headphones, 
-    name: 'Soporte Técnico', 
-    description: 'Brindamos soporte técnico 24/7 para garantizar el funcionamiento óptimo de sus sistemas.',
-    category: 'Soporte'
-  },
-  { 
-    id: 7,
-    icon: BarChart, 
-    name: 'Inteligencia de Negocios (BI)', 
-    description: 'Ofrecemos dashboards y reportes personalizados, análisis de datos avanzados y consultoría de BI.',
-    category: 'Análisis'
-  },
-  { 
-    id: 8,
-    icon: Database, 
-    name: 'Ingeniería de Datos', 
-    description: 'Diseñamos infraestructuras de datos, aseguramos la calidad y gobernanza, y realizamos migraciones de datos.',
-    category: 'Datos'
-  },
-  { 
-    id: 9,
-    icon: Globe, 
-    name: 'Desarrollo de Aplicativos Web', 
-    description: 'Desarrollamos aplicativos web personalizados, optimizamos UX/UI y ofrecemos mantenimiento y soporte.',
-    category: 'Desarrollo'
-  },
-  { 
-    id: 10,
-    icon: Cog, 
-    name: 'Automatización Robótica de Procesos (RPA)', 
-    description: 'Implementamos RPA, integramos sistemas y proporcionamos capacitación y soporte en RPA.',
-    category: 'Automatización'
-  },
-])
+  { id: 1, icon: Code, name: 'Desarrollo de Software', description: 'Creamos soluciones personalizadas.', category: 'Desarrollo' },
+  { id: 2, icon: Database, name: 'Gestión de Datos', description: 'Optimización y análisis de datos.', category: 'Datos' },
+  { id: 3, icon: Cloud, name: 'Servicios en la Nube', description: 'Soluciones en la nube escalables.', category: 'Infraestructura' },
+  { id: 4, icon: Lock, name: 'Ciberseguridad', description: 'Protección digital avanzada.', category: 'Seguridad' },
+  { id: 5, icon: Smartphone, name: 'Desarrollo Móvil', description: 'Aplicaciones móviles para iOS y Android.', category: 'Desarrollo' },
+  { id: 6, icon: Headphones, name: 'Soporte Técnico', description: 'Soporte 24/7.', category: 'Soporte' },
+  { id: 7, icon: BarChart, name: 'Inteligencia de Negocios', description: 'Dashboards y análisis avanzados.', category: 'Análisis' },
+  { id: 8, icon: Globe, name: 'Ingeniería de Datos', description: 'Infraestructura y calidad de datos.', category: 'Datos' },
+  { id: 9, icon: Cog, name: 'Automatización RPA', description: 'Implementación y soporte en RPA.', category: 'Automatización' }
+]);
 
 const categories = computed(() => {
-  return ['Todos', ...new Set(services.value.map(service => service.category))]
-})
+  return ['Todos', ...new Set(services.value.map(service => service.category))];
+});
 
-const selectedCategory = ref('Todos')
+const selectedCategory = ref('Todos');
 
 const setSelectedCategory = (category) => {
-  selectedCategory.value = category
-}
+  selectedCategory.value = category === 'Todos' ? 'Todos' : category; // Asegúrate de manejar bien el caso de "Todos"
+};
 
 const filteredServices = computed(() => {
-  if (selectedCategory.value === 'Todos') {
-    return services.value
-  }
-  return services.value.filter(service => service.category === selectedCategory.value)
-})
+  return selectedCategory.value === 'Todos'
+    ? services.value
+    : services.value.filter(service => service.category === selectedCategory.value);
+});
+
+// Animación de servicios
+const serviceItems = ref([]);
+
+watch(filteredServices, (newServices) => {
+  gsap.from(serviceItems.value, {
+    duration: 0.5,
+    opacity: 0,
+    y: 30,
+    stagger: 0.2,
+  });
+});
+
 </script>
 
 <style scoped>
+.parallax-icon {
+  transition: transform 0.3s ease;
+}
+
 .service-list-enter-active,
 .service-list-leave-active {
   transition: all 0.5s ease;
 }
+
 .service-list-enter-from,
 .service-list-leave-to {
   opacity: 0;

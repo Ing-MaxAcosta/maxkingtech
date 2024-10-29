@@ -1,7 +1,8 @@
 <template>
-  <div class="container mx-auto px-4 py-12">
+  <div class="container mx-auto px-4 py-12 relative">
+    <div id="particle-background"></div>
     <h1 class="text-4xl font-bold mb-8 text-center text-blue-400">Contáctanos</h1>
-    <form @submit.prevent="submitForm" class="max-w-lg mx-auto bg-gray-900 p-8 rounded-lg">
+    <form @submit.prevent="submitForm" class="max-w-lg mx-auto bg-gray-900 p-8 rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
       <div class="mb-4">
         <label for="name" class="block text-gray-300 mb-2">Nombre</label>
         <input 
@@ -40,41 +41,63 @@
         {{ isSubmitting ? 'Enviando...' : 'Enviar Mensaje' }}
       </button>
     </form>
-    <p v-if="submitMessage" class="mt-4 text-center" :class="submitSuccess ? 'text-green-400' : 'text-red-400'">
+    <p v-if="submitMessage" class="mt-4 text-center" :class="submitSuccess ? 'text-green-400' : 'text-red-400'"> 
       {{ submitMessage }}
     </p>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import axios from 'axios'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { loadParticles } from '../particles.js';
 
-const form = ref({
-  name: '',
-  email: '',
-  message: ''
-})
+const form = ref({ name: '', email: '', message: '' });
+const isSubmitting = ref(false);
+const submitMessage = ref('');
+const submitSuccess = ref(false);
 
-const isSubmitting = ref(false)
-const submitMessage = ref('')
-const submitSuccess = ref(false)
+onMounted(() => {
+  loadParticles();
+});
 
 const submitForm = async () => {
-  isSubmitting.value = true
-  submitMessage.value = ''
-  submitSuccess.value = false
+  isSubmitting.value = true;
+  submitMessage.value = '';
+  submitSuccess.value = false;
+
+  // Validación simple
+  if (!form.value.name || !form.value.email || !form.value.message) {
+    submitMessage.value = 'Por favor, completa todos los campos.';
+    submitSuccess.value = false;
+    isSubmitting.value = false;
+    return;
+  }
 
   try {
-    const response = await axios.post('/contact', form.value)
-    submitMessage.value = response.data.message
-    submitSuccess.value = true
-    form.value = { name: '', email: '', message: '' }
+    const response = await axios.post('/contact', form.value);
+    submitMessage.value = response.data.message;
+    submitSuccess.value = true;
+    form.value = { name: '', email: '', message: '' };
   } catch (error) {
-    submitMessage.value = 'Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.'
-    submitSuccess.value = false
+    const errorMessage = error.response?.data?.message || 'Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.';
+    submitMessage.value = errorMessage;
+    submitSuccess.value = false;
   } finally {
-    isSubmitting.value = false
+    isSubmitting.value = false;
   }
-}
+};
 </script>
+
+
+<style scoped>
+/* Efecto en el fondo de partículas */
+#particle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+</style>

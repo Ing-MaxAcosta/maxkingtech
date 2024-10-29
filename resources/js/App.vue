@@ -1,26 +1,16 @@
 <template>
-  <Router>
-    <div class="flex flex-col min-h-screen bg-black text-white">
-      <nav class="p-4">
-        <ul class="flex justify-center space-x-6">
-          <li><RouterLink to="/" class="text-blue-400 hover:text-blue-300">Inicio</RouterLink></li>
-          <li><RouterLink to="/about" class="text-blue-400 hover:text-blue-300">Acerca de</RouterLink></li>
-          <li><RouterLink to="/services" class="text-blue-400 hover:text-blue-300">Servicios</RouterLink></li>
-          <li><RouterLink to="/contact" class="text-blue-400 hover:text-blue-300">Contacto</RouterLink></li>
-        </ul>
-      </nav>
-
-      <main class="flex-grow">
-        <RouterView />
-      </main>
-
-      <Footer />
-    </div>
-  </Router>
+  <div id="app" ref="appContainer">
+    <Header />
+    <router-view />
+    <Footer />
+  </div>
 </template>
 
 <script>
 import { createRouter, createWebHistory } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { gsap } from 'gsap'; // Importar GSAP
+import Header from './components/Header.vue';
 import Home from './components/Home.vue';
 import About from './components/About.vue';
 import Services from './components/Services.vue';
@@ -45,10 +35,15 @@ const router = createRouter({
 
 export default {
   components: {
-    Footer
+    Header,
+    Footer,
   },
-  router
-}
+  router,
+};
+
+onMounted(() => {
+  gsap.from(appContainer.value, { duration: 1, opacity: 0 }); // Efecto de desvanecimiento al cargar
+});
 </script>
 
 <style scoped>

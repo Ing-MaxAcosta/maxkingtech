@@ -1,6 +1,8 @@
 <template>
-  <div class="container mx-auto px-4 py-12">
-    <div v-if="caseStudy" class="bg-gray-900 rounded-lg p-8">
+  <motion.div
+    v-if="caseStudy"
+    v-motion="fadeIn" class="container mx-auto px-4 py-12 relative overflow-hidden">
+    <div v-if="caseStudy" class="bg-gray-900 rounded-lg p-8 shadow-lg transform transition-all duration-500 hover:scale-105">
       <h1 class="text-4xl font-bold mb-6 text-blue-400">{{ caseStudy.title }}</h1>
       <p class="text-gray-300 mb-8 text-lg">{{ caseStudy.description }}</p>
       
@@ -27,13 +29,14 @@
     <div v-else class="text-center text-gray-400">
       Caso de estudio no encontrado
     </div>
-  </div>
+  </motion.div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-
+import { fadeIn } from '../animations/animations'
+ 
 const route = useRoute()
 const caseStudy = ref(null)
 
@@ -74,3 +77,12 @@ onMounted(() => {
   caseStudy.value = caseStudies.find(cs => cs.id === caseStudyId)
 })
 </script>
+
+<style scoped>
+.container {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1)), url('path/to/your/particles-background.png'); /* Reemplaza con el fondo de partículas */
+  background-attachment: fixed;
+  position: relative;
+  overflow: hidden;
+}
+</style>
