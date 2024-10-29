@@ -2,75 +2,247 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Tipografía y fondo */
+/* Variables de color */
+:root {
+  --primary-dark: #0a192f;
+  --primary-light: #00ccff;
+  --accent: #00ff9d;
+  --text-primary: #e6f1ff;
+  --text-secondary: #8892b0;
+  --bg-dark: #0a1930;
+}
+
+header {
+  background: rgba(0, 0, 0, 0.8); /* Fondo negro con 80% de opacidad */
+}
+
+/* Estilos base */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #000; /* Negro de fondo para un estilo futurista */
-    color: #e0e0e0; /* Texto gris claro */
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  overflow-x: hidden;
 }
 
-/* Transiciones y Animaciones */
-.fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s ease;
+/* Efectos de texto futurista */
+.text-glow {
+  text-shadow: 0 0 10px var(--primary-light),
+               0 0 20px var(--primary-light),
+               0 0 30px var(--primary-light);
 }
 
-.fade-enter-from, .fade-leave-to {
-    opacity: 0;
+.text-gradient {
+  background: linear-gradient(45deg, var(--primary-light), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Encabezados futuristas */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Roboto', sans-serif;
-    color: #00ccff; /* Azul eléctrico */
+/* Contenedores con efecto de cristal */
+.glass-container {
+  background: rgba(10, 25, 47, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
 }
 
-/* Estilos para botones de filtro */
-.filter-button {
-    @apply px-4 py-2 rounded-full transition-all duration-300;
+/* Botones futuristas */
+.btn-futuristic {
+  @apply px-6 py-3 rounded-full transition-all duration-300;
+  background: linear-gradient(45deg, var(--primary-light), var(--accent));
+  border: none;
+  position: relative;
+  overflow: hidden;
 }
 
-.filter-button.active {
-    @apply bg-blue-600 text-white;
+.btn-futuristic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
 }
 
-.filter-button:not(.active) {
-    @apply bg-gray-800 text-gray-300 hover:bg-gray-700;
+.btn-futuristic:hover::before {
+  left: 100%;
 }
 
-/* Tarjetas de servicio */
-.service-card {
-    @apply bg-gray-900 p-6 rounded-lg text-center transition-all duration-300 hover:bg-gray-800;
+/* Animaciones de entrada */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
 }
 
-.service-card-icon {
-    @apply w-16 h-16 mx-auto mb-4 text-green-400;
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.service-card-title {
-    @apply text-2xl font-bold mb-2 text-white;
+/* Efectos de hover para tarjetas */
+.hover-card {
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
 }
 
-.service-card-description {
-    @apply text-gray-400 mb-4;
+.hover-card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 0 10px 30px rgba(0, 204, 255, 0.2);
 }
 
-.service-card-button {
-    @apply inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+/* Líneas decorativas */
+.line-decoration {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+  width: 100%;
+  margin: 2rem 0;
 }
 
-/* Estilos para el footer */
-.footer {
-    @apply bg-gray-900 text-white py-8;
+/* Efectos de partículas */
+#particle-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
-.footer-content {
-    @apply container mx-auto px-4;
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.footer-links {
-    @apply flex items-center space-x-4;
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
 }
 
-.footer-link {
-    @apply hover:text-blue-400 transition-colors duration-300;
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 4px;
+}
+
+/* Efectos de navegación */
+.nav-link {
+  position: relative;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-light);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Animaciones para secciones */
+.section-animate {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.section-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Grid futurista */
+.grid-futuristic {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  position: relative;
+}
+
+.grid-futuristic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--primary-light) 25%, transparent 25%),
+              linear-gradient(-45deg, var(--primary-light) 25%, transparent 25%);
+  background-size: 60px 60px;
+  opacity: 0.05;
+  z-index: -1;
+}
+
+/* Efectos de hover para imágenes */
+.image-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-hover img {
+  transition: transform 0.5s ease;
+}
+
+.image-hover:hover img {
+  transform: scale(1.1);
+}
+
+/* Efectos de loading */
+.loading-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  100% {
+    left: 100%;
+  }
+}
+
+/* Efectos de texto typing */
+.typing-effect {
+  border-right: 2px solid var(--primary-light);
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 3.5s steps(30, end),
+             blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--primary-light) }
 }

@@ -25,14 +25,26 @@
 <script setup>
 import { onMounted, onBeforeUnmount } from 'vue';
 
+let throttleTimer;
+
 const handleScroll = () => {
-  document.querySelectorAll(".parallax-content").forEach((element) => {
-    let offset = window.pageYOffset;
-    element.style.transform = `translateY(${offset * 0.2}px)`;
-  });
-  document.querySelector(".parallax-title").style.transform = `translateY(${
-    window.pageYOffset * 0.5
-  }px)`;
+  if (!throttleTimer) {
+    throttleTimer = setTimeout(() => {
+      document.querySelectorAll(".parallax-content").forEach((element) => {
+        if (element) {
+          let offset = window.pageYOffset;
+          element.style.transform = `translateY(${offset * 0.2}px)`;
+        }
+      });
+
+      const titleElement = document.querySelector(".parallax-title");
+      if (titleElement) {
+        titleElement.style.transform = `translateY(${window.pageYOffset * 0.5}px)`;
+      }
+
+      throttleTimer = null;
+    }, 50); // Ajusta el tiempo del throttle según el rendimiento necesario
+  }
 };
 
 onMounted(() => {
@@ -41,9 +53,9 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", handleScroll);
+  if (throttleTimer) clearTimeout(throttleTimer); // Limpia el temporizador si está activo
 });
 </script>
-
 
 <style scoped>
 .parallax-content {

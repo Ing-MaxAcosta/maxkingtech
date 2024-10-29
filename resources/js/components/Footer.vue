@@ -28,7 +28,20 @@
 </template>
 
 <script>
+import { ref, onMounted, onUnmounted } from 'vue';
 import { Facebook, Linkedin, Instagram, Twitter, Mail } from 'lucide-vue-next';
+
+// Función para inicializar partículas (ejemplo)
+const initParticles = () => {
+  // Aquí iría el código para inicializar las partículas, por ejemplo usando particles.js
+  console.log("Particles initialized in Footer"); // Este log es un marcador de posición
+};
+
+// Función para limpiar partículas
+const cleanupParticles = () => {
+  // Aquí iría el código para limpiar las partículas
+  console.log("Particles cleaned up in Footer"); // Este log es un marcador de posición
+};
 
 export default {
   components: {
@@ -37,6 +50,15 @@ export default {
     Instagram,
     Twitter,
     Mail,
+  },
+  setup() {
+    onMounted(() => {
+      initParticles(); // Inicializar partículas al montar el componente
+    });
+
+    onUnmounted(() => {
+      cleanupParticles(); // Limpiar partículas al desmontar el componente
+    });
   },
 };
 </script>

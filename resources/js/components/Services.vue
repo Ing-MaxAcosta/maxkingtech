@@ -44,10 +44,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 import { gsap } from 'gsap'; // Importar GSAP
+import { initParticles, cleanupParticles } from '../particles.js'; // Asegúrate de que la función esté exportada correctamente
 import { Code, Database, Cloud, Lock, Smartphone, Headphones, BarChart, Globe, Cog } from 'lucide-vue-next';
-
 
 const services = ref([
   { id: 1, icon: Code, name: 'Desarrollo de Software', description: 'Creamos soluciones personalizadas.', category: 'Desarrollo' },
@@ -89,6 +89,17 @@ watch(filteredServices, (newServices) => {
   });
 });
 
+// Inicialización y limpieza de partículas
+onMounted(() => {
+  const particleContainer = document.getElementById('particle-background'); // Asegúrate de que este ID esté en el template o en otro lugar
+  if (particleContainer) {
+    initParticles(particleContainer);
+  }
+});
+
+onBeforeUnmount(() => {
+  cleanupParticles(); // Limpia las partículas cuando el componente se destruye
+});
 </script>
 
 <style scoped>

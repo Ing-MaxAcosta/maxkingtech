@@ -33,10 +33,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { fadeIn } from '../animations/animations'
- 
+
+// Función para inicializar partículas (ejemplo)
+const initParticles = () => {
+  // Aquí iría el código para inicializar las partículas, por ejemplo usando particles.js
+  console.log("Particles initialized"); // Este log es un marcador de posición
+};
+
+// Función para limpiar partículas
+const cleanupParticles = () => {
+  // Aquí iría el código para limpiar las partículas
+  console.log("Particles cleaned up"); // Este log es un marcador de posición
+};
+
 const route = useRoute()
 const caseStudy = ref(null)
 
@@ -75,7 +87,12 @@ const caseStudies = [
 onMounted(() => {
   const caseStudyId = parseInt(route.params.id)
   caseStudy.value = caseStudies.find(cs => cs.id === caseStudyId)
-})
+  initParticles(); // Inicializar partículas al montar el componente
+});
+
+onUnmounted(() => {
+  cleanupParticles(); // Limpiar partículas al desmontar el componente
+});
 </script>
 
 <style scoped>

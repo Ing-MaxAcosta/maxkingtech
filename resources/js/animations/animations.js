@@ -1,5 +1,5 @@
 // resources/js/animations/animations.js
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 
 // Ejemplo de animación para un componente
 export const fadeIn = {

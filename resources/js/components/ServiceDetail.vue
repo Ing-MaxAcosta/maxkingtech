@@ -40,10 +40,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { gsap } from 'gsap'; // Importar GSAP
 import { Code, Database, Cloud, Lock, Smartphone, Headphones, BarChart, Globe, Cog } from 'lucide-vue-next';
+import { initParticles, cleanupParticles } from '../particles';
 
 const route = useRoute();
 const service = ref(null);
@@ -133,9 +134,15 @@ const services = [
 ];
 
 onMounted(() => {
-  service.value = services.find(s => s.id === parseInt(route.params.id));
+  const serviceId = parseInt(route.params.id); // Obtén el id desde los parámetros de la ruta
+  service.value = services.find(s => s.id === serviceId); // Busca el servicio correspondiente
   if (service.value) {
     gsap.from(serviceDetail.value, { duration: 1, opacity: 0, y: 50 }); // Animación de entrada
+    initParticles(); // Inicializar partículas al montar el componente
   }
+});
+
+onUnmounted(() => {
+  cleanupParticles(); // Limpiar partículas al desmontar el componente
 });
 </script>

@@ -48,9 +48,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
-import { loadParticles } from '../particles.js';
+import { initParticles, cleanupParticles  } from '../particles.js';
 
 const form = ref({ name: '', email: '', message: '' });
 const isSubmitting = ref(false);
@@ -58,7 +58,14 @@ const submitMessage = ref('');
 const submitSuccess = ref(false);
 
 onMounted(() => {
-  loadParticles();
+  const particleContainer = document.getElementById('particle-background');
+  if (particleContainer) {
+    initParticles(particleContainer); // Llamada corregida a initParticles con contenedor específico
+  }
+});
+
+onUnmounted(() => {
+  cleanupParticles();
 });
 
 const submitForm = async () => {
@@ -88,7 +95,6 @@ const submitForm = async () => {
   }
 };
 </script>
-
 
 <style scoped>
 /* Efecto en el fondo de partículas */
