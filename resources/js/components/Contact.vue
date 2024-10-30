@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-4 py-12 relative">
-    <div id="particle-background"></div>
+    <div ref="particleContainer" class="fixed top-0 left-0 w-full h-full -z-10"></div>
     <h1 class="text-4xl font-bold mb-8 text-center text-blue-400">Contáctanos</h1>
     <form @submit.prevent="submitForm" class="max-w-lg mx-auto bg-gray-900 p-8 rounded-lg shadow-lg transition-all duration-500 transform hover:scale-105">
       <div class="mb-4">
@@ -50,22 +50,30 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
+import { gsap } from 'gsap'; // Importar GSAP
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initParticles, cleanupParticles  } from '../particles.js';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const form = ref({ name: '', email: '', message: '' });
 const isSubmitting = ref(false);
 const submitMessage = ref('');
 const submitSuccess = ref(false);
+const particleContainer = ref(null);
 
+// Animaciones
 onMounted(() => {
-  const particleContainer = document.getElementById('particle-background');
-  if (particleContainer) {
-    initParticles(particleContainer); // Llamada corregida a initParticles con contenedor específico
+  // Inicializar Three.js para las partículas
+  if (particleContainer.value) {
+    initParticles(particleContainer.value);
   }
 });
 
 onUnmounted(() => {
+  // Limpiar Three.js y ScrollTrigger
   cleanupParticles();
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 });
 
 const submitForm = async () => {
@@ -98,7 +106,7 @@ const submitForm = async () => {
 
 <style scoped>
 /* Efecto en el fondo de partículas */
-#particle-background {
+.particle-background {
   position: absolute;
   top: 0;
   left: 0;

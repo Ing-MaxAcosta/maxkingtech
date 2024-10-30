@@ -2,6 +2,10 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* Importa la fuente */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+
 /* Variables de color */
 :root {
   --primary-dark: #0a192f;
@@ -106,13 +110,62 @@ body {
 }
 
 /* Efectos de partículas */
-#particle-background {
+.particle-background {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: -1;
+  /* Reemplaza la imagen con un gradiente */
+  background: linear-gradient(
+    -45deg,
+    var(--primary-dark) 0%,
+    var(--bg-dark) 25%,
+    var(--primary-light) 50%,
+    var(--bg-dark) 75%,
+    var(--primary-dark) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  opacity: 0.15; /* Ajusta esto según necesites */
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* También podemos agregar un efecto de "estrellas" */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: 
+    radial-gradient(1px 1px at 50px 50px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 100px 150px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 150px 250px, #fff, rgba(0,0,0,0));
+  background-size: 200px 200px;
+  animation: floating 4s linear infinite;
+}
+
+@keyframes floating {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-200px);
+  }
 }
 
 /* Scrollbar personalizado */

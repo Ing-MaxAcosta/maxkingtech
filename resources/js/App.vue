@@ -1,5 +1,6 @@
 <template>
   <div id="app" ref="appContainer" class="min-h-screen flex flex-col">
+    <div ref="particleContainer" class="fixed top-0 left-0 w-full h-full -z-10"></div>
     <Header />
     <router-view />
     <Footer />

@@ -1,5 +1,7 @@
 <template>
   <div class="container mx-auto px-4 py-12">
+    <!-- Fondo de partículas -->
+    <div ref="particleContainer" class="fixed top-0 left-0 w-full h-full -z-10"></div>
     <h1 class="text-4xl font-bold mb-8 text-center text-blue-400 parallax-title">Acerca de Nosotros</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
       <div class="parallax-content">
@@ -23,37 +25,25 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { initParticles, cleanupParticles } from '../particles';
 
-let throttleTimer;
+// Referencias para animaciones
+const particleContainer = ref(null);
 
-const handleScroll = () => {
-  if (!throttleTimer) {
-    throttleTimer = setTimeout(() => {
-      document.querySelectorAll(".parallax-content").forEach((element) => {
-        if (element) {
-          let offset = window.pageYOffset;
-          element.style.transform = `translateY(${offset * 0.2}px)`;
-        }
-      });
-
-      const titleElement = document.querySelector(".parallax-title");
-      if (titleElement) {
-        titleElement.style.transform = `translateY(${window.pageYOffset * 0.5}px)`;
-      }
-
-      throttleTimer = null;
-    }, 50); // Ajusta el tiempo del throttle según el rendimiento necesario
-  }
-};
-
+// Animaciones
 onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
+  // Inicializar Three.js para las partículas
+  if (particleContainer.value) {
+    initParticles(particleContainer.value);
+  }
 });
 
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", handleScroll);
-  if (throttleTimer) clearTimeout(throttleTimer); // Limpia el temporizador si está activo
+onUnmounted(() => {
+  // Limpiar Three.js y ScrollTrigger
+  cleanupParticles();
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 });
 </script>
 

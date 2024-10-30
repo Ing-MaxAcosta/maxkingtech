@@ -1,7 +1,8 @@
 <template>
   <header class="fixed top-0 left-0 w-full bg-black text-white py-4 shadow-lg z-10 transition-opacity duration-300" :style="{ opacity: headerOpacity }">
     <!-- Fondo de partículas -->
-    <div id="particle-background" class="absolute inset-0 z-0 flex-grow pt-16"></div>
+    <div ref="particleContainer" class="fixed top-0 left-0 w-full h-full -z-10"></div>
+    <div class="stars"></div>
 
     <!-- Contenido del encabezado, con partículas en segundo plano -->
     <nav class="relative z-10 container mx-auto flex justify-center space-x-8 text-blue-400">
@@ -41,7 +42,7 @@
     },
     methods: {
       animateHeader() {
-        gsap.from("#particle-background", { duration: 1, opacity: 0 });
+        gsap.from(".particle-background", { duration: 1, opacity: 0 });
         gsap.from(".z-10", { duration: 1, y: -50, opacity: 0, delay: 0.5 });
       },
       handleScroll() {
@@ -59,7 +60,7 @@ a {
 }
 
 /* Ajuste del fondo de partículas */
-#particle-background {
+.particle-background {
   position: absolute;
   width: 100%;
   height: 100%;

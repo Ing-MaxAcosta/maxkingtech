@@ -2,6 +2,8 @@
   <motion.div
     v-if="caseStudy"
     v-motion="fadeIn" class="container mx-auto px-4 py-12 relative overflow-hidden">
+    <!-- Fondo de partículas -->
+    <div ref="particleContainer" class="fixed top-0 left-0 w-full h-full -z-10"></div>
     <div v-if="caseStudy" class="bg-gray-900 rounded-lg p-8 shadow-lg transform transition-all duration-500 hover:scale-105">
       <h1 class="text-4xl font-bold mb-6 text-blue-400">{{ caseStudy.title }}</h1>
       <p class="text-gray-300 mb-8 text-lg">{{ caseStudy.description }}</p>
@@ -36,18 +38,11 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { fadeIn } from '../animations/animations'
+import { gsap } from 'gsap'; // Importar GSAP
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { initParticles, cleanupParticles } from '../particles.js'; // Asegúrate de que la función esté exportada correctamente
 
-// Función para inicializar partículas (ejemplo)
-const initParticles = () => {
-  // Aquí iría el código para inicializar las partículas, por ejemplo usando particles.js
-  console.log("Particles initialized"); // Este log es un marcador de posición
-};
-
-// Función para limpiar partículas
-const cleanupParticles = () => {
-  // Aquí iría el código para limpiar las partículas
-  console.log("Particles cleaned up"); // Este log es un marcador de posición
-};
+gsap.registerPlugin(ScrollTrigger);
 
 const route = useRoute()
 const caseStudy = ref(null)
@@ -84,20 +79,24 @@ const caseStudies = [
   // ... Añadir más casos de estudio según sea necesario
 ]
 
+// Animaciones
 onMounted(() => {
-  const caseStudyId = parseInt(route.params.id)
-  caseStudy.value = caseStudies.find(cs => cs.id === caseStudyId)
-  initParticles(); // Inicializar partículas al montar el componente
+  // Inicializar Three.js para las partículas
+  if (particleContainer.value) {
+    initParticles(particleContainer.value);
+  }
 });
 
 onUnmounted(() => {
-  cleanupParticles(); // Limpiar partículas al desmontar el componente
+  // Limpiar Three.js y ScrollTrigger
+  cleanupParticles();
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 });
 </script>
 
 <style scoped>
 .container {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1)), url('path/to/your/particles-background.png'); /* Reemplaza con el fondo de partículas */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1)); /* Reemplaza con el fondo de partículas */
   background-attachment: fixed;
   position: relative;
   overflow: hidden;

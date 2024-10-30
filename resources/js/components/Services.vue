@@ -1,5 +1,8 @@
 <template>
   <div class="container mx-auto px-4 py-12">
+    <!-- Fondo de partículas -->
+    <div ref="particleContainer" class="fixed top-0 left-0 w-full h-full -z-10"></div>
+
     <h1 class="text-4xl font-bold mb-12 text-center text-blue-400">Nuestros Servicios</h1>
     
     <div class="flex flex-wrap justify-center gap-4 mb-8">
@@ -44,10 +47,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { gsap } from 'gsap'; // Importar GSAP
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initParticles, cleanupParticles } from '../particles.js'; // Asegúrate de que la función esté exportada correctamente
 import { Code, Database, Cloud, Lock, Smartphone, Headphones, BarChart, Globe, Cog } from 'lucide-vue-next';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = ref([
   { id: 1, icon: Code, name: 'Desarrollo de Software', description: 'Creamos soluciones personalizadas.', category: 'Desarrollo' },
@@ -80,6 +86,8 @@ const filteredServices = computed(() => {
 // Animación de servicios
 const serviceItems = ref([]);
 
+const particleContainer = ref(null);
+
 watch(filteredServices, (newServices) => {
   gsap.from(serviceItems.value, {
     duration: 0.5,
@@ -89,16 +97,18 @@ watch(filteredServices, (newServices) => {
   });
 });
 
-// Inicialización y limpieza de partículas
+// Animaciones
 onMounted(() => {
-  const particleContainer = document.getElementById('particle-background'); // Asegúrate de que este ID esté en el template o en otro lugar
-  if (particleContainer) {
-    initParticles(particleContainer);
+  // Inicializar Three.js para las partículas
+  if (particleContainer.value) {
+    initParticles(particleContainer.value);
   }
 });
 
-onBeforeUnmount(() => {
-  cleanupParticles(); // Limpia las partículas cuando el componente se destruye
+onUnmounted(() => {
+  // Limpiar Three.js y ScrollTrigger
+  cleanupParticles();
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 });
 </script>
 

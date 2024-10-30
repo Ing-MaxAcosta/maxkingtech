@@ -48,6 +48,7 @@ import { initParticles, cleanupParticles } from '../particles';
 
 const route = useRoute();
 const service = ref(null);
+const serviceId = parseInt(route.params.id);
 
 const services = [
   { 
@@ -133,15 +134,24 @@ const services = [
   }
 ];
 
+
 onMounted(() => {
-  const serviceId = parseInt(route.params.id); // Obtén el id desde los parámetros de la ruta
-  service.value = services.find(s => s.id === serviceId); // Busca el servicio correspondiente
+  const serviceId = parseInt(route.params.id);
+  service.value = services.find(s => s.id === serviceId);
   if (service.value) {
     gsap.from(serviceDetail.value, { duration: 1, opacity: 0, y: 50 }); // Animación de entrada
     initParticles(); // Inicializar partículas al montar el componente
   }
 });
-
+/*
+// Animaciones
+onMounted(() => {
+  // Inicializar Three.js para las partículas
+  if (particleContainer.value) {
+    initParticles(particleContainer.value);
+  }
+});
+*/
 onUnmounted(() => {
   cleanupParticles(); // Limpiar partículas al desmontar el componente
 });
